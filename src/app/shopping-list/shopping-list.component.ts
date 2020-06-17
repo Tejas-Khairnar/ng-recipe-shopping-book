@@ -18,4 +18,9 @@ export class ShoppingListComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  // recieve newly added ingredient from child component i.e shopping-edit to here using event binding
+  onIngredientAdded($ingredientFromShopEdit: Ingredient) {
+    this.ingredients.push($ingredientFromShopEdit);
+  }
+
 }

@@ -5,19 +5,19 @@
                 <!-- input for ingredient name -->
                 <div class="col-sm-5 form-group">
                     <label for="name">Name</label>
-                    <input type="text" id="name" class="form-control">
+                    <input type="text" id="name" class="form-control" #nameInput>
                 </div>
 
                 <!-- input for inredient amount -->
                 <div class="col-sm-2 form-group">
                     <label for="amount">Amount</label>
-                    <input type="number" id="amount" class="form-control">
+                    <input type="number" id="amount" class="form-control" #amountInput>
                 </div>
 
                 <!-- ingredient action buttons -->
                 <div class="row">
                     <div class="col-xs-12">
-                        <button type="submit" class="btn btn-success" style="margin-right: 3px;">Add</button>
+                        <button type="submit" class="btn btn-success" style="margin-right: 3px;" (click)="onAddItem()">Add</button>
                         <button type="button" class="btn btn-danger" style="margin-right: 3px;">Delete</button>
                         <button type="button" class="btn btn-primary">Clear</button>
                     </div>
