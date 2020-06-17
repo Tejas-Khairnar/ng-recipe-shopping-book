@@ -1,7 +1,5 @@
 // shared for both Recipes and Shopping List components
 
-import { threadId } from 'worker_threads';
-
 export class Ingredient {
     // public name: string;
     // public amount: number;
