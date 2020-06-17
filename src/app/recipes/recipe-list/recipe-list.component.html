@@ -10,6 +10,7 @@
 <div class="row">
     <div class="col-xs-12">
         <!-- pass recipe from parent component i.e recipe-list to recipe of child component i.e recipe-item -->
-        <app-recipe-item *ngFor="let recipe of recipes" [recipe]="recipe"></app-recipe-item>
+        <!-- pass selected recipe from child component i.e recipe-item to parent component i.e recipe-list-->
+        <app-recipe-item *ngFor="let recipe of recipes" [recipe]="recipe" (selectedRecipe)="onRecipeSelected(recipe)"></app-recipe-item>
     </div>
 </div>
