@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { Ingredient } from '../shared/ingredient.model';
+import { ShoppingListService } from './shopping-list.service';
 
 @Component({
   selector: 'app-shopping-list',
@@ -8,19 +9,13 @@ import { Ingredient } from '../shared/ingredient.model';
   styleUrls: ['./shopping-list.component.css']
 })
 export class ShoppingListComponent implements OnInit {
-  ingredients: Ingredient[] = [
-    new Ingredient('Apple', 5),
-    new Ingredient('Tomato', 10)
-  ];
+  ingredients: Ingredient[];
 
-  constructor() { }
+  // inject shopping list service here
+  constructor(private shoppingListService: ShoppingListService) { }
 
   ngOnInit(): void {
+    // initialize ingredients array from shopping list service array
+    this.ingredients = this.shoppingListService.getIngredients();
   }
-
-  // recieve newly added ingredient from child component i.e shopping-edit to here using event binding
-  onIngredientAdded($ingredientFromShopEdit: Ingredient) {
-    this.ingredients.push($ingredientFromShopEdit);
-  }
-
 }
