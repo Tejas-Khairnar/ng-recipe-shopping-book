@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 import { Recipe } from './../recipe.model';
+import { RecipeService } from '../recipe.service';
 
 @Component({
   selector: 'app-recipe-list',
@@ -12,14 +13,14 @@ export class RecipeListComponent implements OnInit {
   @Output() selectedRecipeFromRecipeList = new EventEmitter<Recipe>();
 
   // stores recipe based on Recipe blueprint
-  recipes: Recipe[] = [
-    new Recipe('Test', 'Simple recipe', 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1470&q=80'),
-    new Recipe('Test', 'Simple recipe', 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1470&q=80')
-  ];
+  recipes: Recipe[];
 
-  constructor() { }
+  // inject recipe srvice here
+  constructor(private recipeService: RecipeService) { }
 
   ngOnInit(): void {
+    // initialize recipes array from recipe service array
+    this.recipes = this.recipeService.getRecipes();
   }
 
   // get selected recipe from child component i.e recipe-item to here by event binding
