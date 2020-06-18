@@ -27,4 +27,14 @@ export class ShoppingListService {
         // emit array from this service as solution of above issue
         this.ingredientsChanged.emit(this.ingredients.slice());
     }
+
+    // add ingredients from recipe service
+    addIngredientsFromRecipe(ingredients: Ingredient[]) {
+        // solution 1 => but may lots ofevent emition here
+        // for (let ingredient of ingredients) {
+        //     this.addIngredient(ingredient);
+        // }
+        this.ingredients.push(...ingredients);
+        this.ingredientsChanged.emit(this.ingredients.slice());
+    }
 }
