@@ -24,7 +24,6 @@ export class RecipeListComponent implements OnInit {
 
   // get selected recipe from child component i.e recipe-item to here by event binding
   onRecipeSelected(recipeFromRecipeItem: Recipe) {
-    console.log('recipe', recipeFromRecipeItem);
     // emit recipe selected from recipe item component to recipes component
     this.selectedRecipeFromRecipeList.emit(recipeFromRecipeItem);
   }
