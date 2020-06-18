@@ -10,11 +10,17 @@ import { RecipeService } from './recipe.service';
   providers: [RecipeService] // 1 single instance is access here and also all its child component
 })
 export class RecipesComponent implements OnInit {
-  selectedRecipeFromRecipeList: Recipe;
+  selectedRecipeFromRecipeItem: Recipe;
 
-  constructor() { }
+  // inject recipe service here
+  constructor(private recipeService: RecipeService) { }
 
   ngOnInit(): void {
+    // listen to selected recipe emitted from recipe-item to here
+    this.recipeService.selectedRecipe
+      .subscribe((recipe: Recipe) => {
+        this.selectedRecipeFromRecipeItem = recipe;
+      });
   }
 
 }
