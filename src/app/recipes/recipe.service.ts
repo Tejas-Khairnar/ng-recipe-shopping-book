@@ -1,6 +1,7 @@
 import { EventEmitter } from '@angular/core';
 
 import { Recipe } from './recipe.model';
+import { Ingredient } from '../shared/ingredient.model';
 
 export class RecipeService {
     // define selected recipe as event emitter object for cross component communication
@@ -8,8 +9,24 @@ export class RecipeService {
 
     // stores recipe based on Recipe blueprint
     private recipes: Recipe[] = [
-        new Recipe('Test', 'Simple recipe', 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1470&q=80'),
-        new Recipe('Test', 'Simple recipe', 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1470&q=80')
+        new Recipe(
+            'Meal',
+            'Simple tasty meal',
+            'https://images.unsplash.com/photo-1490645935967-10de6ba17061?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1470&q=80',
+            [
+                new Ingredient('Meat', 1),
+                new Ingredient('French Fries', 20)
+            ]
+        ),
+        new Recipe(
+            'Big Fate Burger',
+            'What else you need to say?',
+            'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1502&q=80',
+            [
+                new Ingredient('Meat', 1),
+                new Ingredient('Buns', 2)
+            ]
+        )
     ];
 
     // return recipes outside
