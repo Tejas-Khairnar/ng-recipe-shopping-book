@@ -1,10 +1,10 @@
+import { Subject } from 'rxjs';
 import { Ingredient } from '../shared/ingredient.model';
-import { EventEmitter } from '@angular/core';
 
 export class ShoppingListService {
-    // inform shopping-list that new ingredient added in shopping-edit through custome event emitter object
-    // its emit new ingredients array
-    ingredientsChanged = new EventEmitter<Ingredient[]>();
+    // inform shopping-list that new ingredient added in shopping-edit through rxjs subject
+    // its emit(next) new ingredients array
+    ingredientsChanged = new Subject<Ingredient[]>();
 
     // stores ingredients based on Ingredients blueprint
     private ingredients: Ingredient[] = [
@@ -24,8 +24,8 @@ export class ShoppingListService {
         // not work as expected because we work on copy not original array
         this.ingredients.push(ingredient);
 
-        // emit array from this service as solution of above issue
-        this.ingredientsChanged.emit(this.ingredients.slice());
+        // emit(next) array from this service as solution of above issue
+        this.ingredientsChanged.next(this.ingredients.slice());
     }
 
     // add ingredients from recipe service
@@ -35,6 +35,6 @@ export class ShoppingListService {
         //     this.addIngredient(ingredient);
         // }
         this.ingredients.push(...ingredients);
-        this.ingredientsChanged.emit(this.ingredients.slice());
+        this.ingredientsChanged.next(this.ingredients.slice());
     }
 }
