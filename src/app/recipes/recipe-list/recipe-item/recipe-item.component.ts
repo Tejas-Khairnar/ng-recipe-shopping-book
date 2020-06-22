@@ -10,6 +10,8 @@ import { Recipe } from './../../recipe.model';
 export class RecipeItemComponent implements OnInit {
   // get recipe from parent component i.e recipe-list component here 
   @Input() recipe: Recipe;
+  // get index of selected recipe from component i.e recipe-list component here
+  @Input() index: number;
 
   ngOnInit(): void {
   }

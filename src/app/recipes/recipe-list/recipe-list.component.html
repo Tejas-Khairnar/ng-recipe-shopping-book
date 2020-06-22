@@ -9,7 +9,7 @@
 <!-- list of recipes -->
 <div class="row">
     <div class="col-xs-12">
-        <!-- pass recipe from parent component i.e recipe-list to recipe of child component i.e recipe-item -->
-        <app-recipe-item *ngFor="let recipe of recipes" [recipe]="recipe"></app-recipe-item>
+        <!-- pass recipe, index of recipe from parent component i.e recipe-list to recipe of child component i.e recipe-item -->
+        <app-recipe-item *ngFor="let recipe of recipes; let i = index" [index]="i" [recipe]="recipe"></app-recipe-item>
     </div>
 </div>
