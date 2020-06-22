@@ -3,6 +3,8 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { RecipesComponent } from './recipes/recipes.component';
 import { ShoppingListComponent } from './shopping-list/shopping-list.component';
+import { RecipeStartComponent } from './recipes/recipe-start/recipe-start.component';
+import { RecipeDetailComponent } from './recipes/recipe-detail/recipe-detail.component';
 
 
 const routes: Routes = [
@@ -11,7 +13,14 @@ const routes: Routes = [
   // pathMatch: 'prefix' => default option, include empty route in all other routes
   { path: '', redirectTo: '/recipes', pathMatch: 'full' }, // localhost:4200
   // here the main routes for components in app
-  { path: 'recipes', component: RecipesComponent }, // localhost:4200/recipes
+  {
+    path: 'recipes', component: RecipesComponent,
+    // here all child routes of Recipes
+    children: [
+      { path: '', component: RecipeStartComponent }, // localhost:4200, very first time when load
+      { path: ':id', component: RecipeDetailComponent } // localhost:4200/recipes/id
+    ]
+  }, // localhost:4200/recipes
   { path: 'shopping-list', component: ShoppingListComponent } // localhost:4200/shopping-list
 ];
 

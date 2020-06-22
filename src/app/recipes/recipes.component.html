@@ -3,9 +3,7 @@
         <app-recipe-list></app-recipe-list>
     </div>
     <div class="col-md-7">
-        <app-recipe-detail *ngIf="selectedRecipeFromRecipeItem; else elsePart" [recipe]="selectedRecipeFromRecipeItem"></app-recipe-detail>
-        <ng-template #elsePart>
-            <p>Please select a recipe from Recipe List</p>
-        </ng-template>
+        <!-- hook to load Recipes child routes here -->
+        <router-outlet></router-outlet>
     </div>
 </div>
