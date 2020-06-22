@@ -1,5 +1,6 @@
 <!-- code todisplay single recipe -->
-<a href="#" class="list-group-item clearfix" (click)="onSelectedItem()">
+<!-- href="" always send request to server and load new page -->
+<a style="cursor: pointer;" class="list-group-item clearfix" (click)="onSelectedItem()">
     <div class="pull-left">
         <h4 class="list-group-item-heading">{{ recipe.name }}</h4>
         <p class="list-group-item-text">{{ recipe.description}}</p>
