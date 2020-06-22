@@ -5,6 +5,7 @@ import { RecipesComponent } from './recipes/recipes.component';
 import { ShoppingListComponent } from './shopping-list/shopping-list.component';
 import { RecipeStartComponent } from './recipes/recipe-start/recipe-start.component';
 import { RecipeDetailComponent } from './recipes/recipe-detail/recipe-detail.component';
+import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component';
 
 
 const routes: Routes = [
@@ -18,7 +19,10 @@ const routes: Routes = [
     // here all child routes of Recipes
     children: [
       { path: '', component: RecipeStartComponent }, // localhost:4200, very first time when load
-      { path: ':id', component: RecipeDetailComponent } // localhost:4200/recipes/id
+      // order of static route and dynamic route is important here to work correctlly
+      { path: 'new', component: RecipeEditComponent }, // localhost:4200/recipes/new
+      { path: ':id', component: RecipeDetailComponent }, // localhost:4200/recipes/id
+      { path: ':id/edit', component: RecipeEditComponent } // localhost:4200/recipes/id/edit
     ]
   }, // localhost:4200/recipes
   { path: 'shopping-list', component: ShoppingListComponent } // localhost:4200/shopping-list
