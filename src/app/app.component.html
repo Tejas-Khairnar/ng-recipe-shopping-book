@@ -5,8 +5,8 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <app-recipes *ngIf="loadedFeature === 'recipes'"></app-recipes>
-            <app-shopping-list *ngIf="loadedFeature === 'shopping-list'"></app-shopping-list>
+            <!-- hook for router to implement our routes here and render Recipes and ShoppingList components as per link selection in header component -->
+            <router-outlet></router-outlet>
         </div>
     </div>
 </div>
