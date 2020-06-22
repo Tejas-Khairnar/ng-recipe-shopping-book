@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { Recipe } from './../recipe.model';
 import { RecipeService } from '../recipe.service';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 
 @Component({
   selector: 'app-recipe-detail',
@@ -14,8 +14,8 @@ export class RecipeDetailComponent implements OnInit {
   // store id from route parameter by params observable
   recipeId: number;
 
-  // inject recipe, ActivatedRoute service here
-  constructor(private recipeService: RecipeService, private route: ActivatedRoute) { }
+  // inject recipe, ActivatedRoute, router service here
+  constructor(private recipeService: RecipeService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
     // get id from route parameter using snapshot
@@ -32,6 +32,15 @@ export class RecipeDetailComponent implements OnInit {
   // add inredients to shopping list
   onAddToShoppingList() {
     this.recipeService.addIngredientsToShoppingList(this.recipe.ingredients);
+  }
+
+  // load new component i.e recipe-edit when click on edit-recipe button
+  onEditRecipe() {
+    // programatically load recipe-edit component here
+    // this.router.navigate(['edit'], { relativeTo: this.route }); // we are already on localhost:4200/recipes/id then append relative route to it i.e edit
+
+    // alternative to above approach
+    this.router.navigate(['../', this.recipeId, 'edit'], { relativeTo: this.route }); // configure route to navigate to recipe-edit component with all route parameters
   }
 
 }
