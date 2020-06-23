@@ -56,4 +56,9 @@ export class RecipeEditComponent implements OnInit {
     });
   }
 
+  // get form data here when hit save (i.e type submit) button
+  onSubmit() {
+    console.log(this.recipeForm);
+  }
+
 }

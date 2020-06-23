@@ -1,6 +1,7 @@
 <div class="row">
     <div class="col-xs-12">
-        <form>
+        <!-- connect form with angular reactive form's directives -->
+        <form [formGroup]="recipeForm" (ngSubmit)="onSubmit()">
             <!-- form actions -->
             <div class="row">
                 <div class="col-xs-12">
@@ -13,7 +14,7 @@
                 <div class="col-xs-12">
                     <div class="form-group">
                         <label for="name">Name</label>
-                        <input id="name" type="text" class="form-control">
+                        <input id="name" type="text" class="form-control" [formControlName]="'name'">
                     </div>
                 </div>
             </div>
@@ -22,7 +23,7 @@
                 <div class="col-xs-12">
                     <div class="form-group">
                         <label for="imagePath">Image URL</label>
-                        <input id="imagePath" type="text" class="form-control">
+                        <input id="imagePath" type="text" class="form-control" formControlName="imagePath">
                     </div>
                 </div>
             </div>
@@ -37,7 +38,7 @@
                 <div class="col-xs-12">
                     <div class="form-group">
                         <label for="description">Description</label>
-                        <textarea id="description" type="text" class="form-control" rows="6"></textarea>
+                        <textarea id="description" type="text" class="form-control" rows="6" formControlName="description"></textarea>
                     </div>
                 </div>
             </div>
