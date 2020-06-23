@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { RecipeService } from '../recipe.service';
 
@@ -25,7 +25,7 @@ export class RecipeEditComponent implements OnInit {
   }
 
   // inject ActivatesRoute service here to fetch route parameter set into app-routing.module.ts
-  constructor(private route: ActivatedRoute, private recipeService: RecipeService) { }
+  constructor(private route: ActivatedRoute, private recipeService: RecipeService, private router: Router) { }
 
   ngOnInit(): void {
     // retrieve dynamic id from route parameters
@@ -100,6 +100,9 @@ export class RecipeEditComponent implements OnInit {
       this.recipeService.addNewRecipeToList(newRecipe);
       // can use this.recipeForm.value as 2nd argument above as it has same format as our Recipe model
     }
+
+    // reset form here
+    this.onCancelForm();
   }
 
   // add new ingredient control to FormArray of ingredients
@@ -113,5 +116,11 @@ export class RecipeEditComponent implements OnInit {
         'amount': new FormControl(null, [Validators.required, Validators.pattern(/^[1-9]+[0-9]*$/)])
       })
     );
+  }
+
+  // discard form's values
+  onCancelForm() {
+    // navigate to 1 level up from this current route
+    this.router.navigate(['../'], { relativeTo: this.route });
   }
 }

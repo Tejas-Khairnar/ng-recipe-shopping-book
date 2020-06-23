@@ -68,4 +68,12 @@ export class RecipeService {
         // emit/next new copy of updated recipes array
         this.recipeChanged.next(this.recipes.slice());
     }
+
+    // delete selected recipe
+    deleteSelectedRecipe(index: number) {
+        // delete recipe by its index and splice method of array
+        this.recipes.splice(index, 1);
+        // emit/next new copy of updated recipes array
+        this.recipeChanged.next(this.recipes.slice());
+    }
 }
