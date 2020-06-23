@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { FormGroup, FormControl, FormArray } from '@angular/forms';
+import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { RecipeService } from '../recipe.service';
 
 @Component({
@@ -59,8 +59,8 @@ export class RecipeEditComponent implements OnInit {
             // this is for ingredients if present in recipe as group of ingredient name and amount
             new FormGroup({
               // controls for ingredients
-              'name': new FormControl(ingredient.name),
-              'amount': new FormControl(ingredient.amount)
+              'name': new FormControl(ingredient.name, Validators.required),
+              'amount': new FormControl(ingredient.amount, [Validators.required, Validators.pattern(/^[1-9]+[0-9]*$/)])
             })
           );
         }
@@ -71,9 +71,9 @@ export class RecipeEditComponent implements OnInit {
     this.recipeForm = new FormGroup({
       // all controls of reactive form define here as key: value pairs
       // new FormControl(initialValue, validators/custome validators, async validators)
-      'name': new FormControl(existingRecipeName),
-      'imagePath': new FormControl(existingRecipeImagePath),
-      'description': new FormControl(existingRecipeDescription),
+      'name': new FormControl(existingRecipeName, Validators.required),
+      'imagePath': new FormControl(existingRecipeImagePath, Validators.required),
+      'description': new FormControl(existingRecipeDescription, Validators.required),
       'ingredients': existingRecipeIngredients // it is a formArray
     });
   }
@@ -90,8 +90,8 @@ export class RecipeEditComponent implements OnInit {
       // because ingredient is of FormGroup type
       new FormGroup({
         // controls for ingredient
-        'name': new FormControl(),
-        'amount': new FormControl()
+        'name': new FormControl(null, Validators.required),
+        'amount': new FormControl(null, [Validators.required, Validators.pattern(/^[1-9]+[0-9]*$/)])
       })
     );
   }
