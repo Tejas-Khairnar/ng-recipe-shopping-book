@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 
 import { Recipe } from './../recipe.model';
 import { RecipeService } from '../recipe.service';
@@ -9,7 +10,9 @@ import { Router, ActivatedRoute } from '@angular/router';
   templateUrl: './recipe-list.component.html',
   styleUrls: ['./recipe-list.component.css']
 })
-export class RecipeListComponent implements OnInit {
+export class RecipeListComponent implements OnInit, OnDestroy {
+  // store subscription of our own subject emition
+  subscription: Subscription;
 
   // stores recipe based on Recipe blueprint
   recipes: Recipe[];
@@ -19,7 +22,7 @@ export class RecipeListComponent implements OnInit {
 
   ngOnInit(): void {
     // get updated recipes array using subject when new item added or existing get updated
-    this.recipeService.recipeChanged.subscribe((recipes: Recipe[]) => {
+    this.subscription = this.recipeService.recipeChanged.subscribe((recipes: Recipe[]) => {
       this.recipes = recipes;
     });
 
@@ -32,5 +35,11 @@ export class RecipeListComponent implements OnInit {
     // programatically navigate to other route i.e recipe-edit component
     // here we use relative route because we already on localhost:4200/recipes route
     this.router.navigate(['new'], { relativeTo: this.route }); // obje here gives current route of page then attach relative route to it
+  }
+
+  // unsubscribe our own defined subscription
+  ngOnDestroy() {
+    // clean up our own subscription here
+    this.subscription.unsubscribe();
   }
 }

@@ -57,7 +57,9 @@
                         </div>
                         <!-- button to delte selected ingredient -->
                         <div class="col-xs-2">
-                            <button class="btn btn-danger">X</button>
+                            <!-- type="button" => prevent form submission here -->
+                            <!-- pass index of selected ingredient control to delete it from FormArray -->
+                            <button class="btn btn-danger" type="button" (click)="onDeleteIngredientFromFormArray(i)">X</button>
                         </div>
                     </div>
                     <hr>
