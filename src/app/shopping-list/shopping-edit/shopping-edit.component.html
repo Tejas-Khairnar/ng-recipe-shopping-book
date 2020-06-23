@@ -7,20 +7,21 @@
                 <div class="col-sm-5 form-group">
                     <label for="name">Name</label>
                     <!-- angular's directive to register control -->
-                    <input type="text" id="name" class="form-control" name="name" ngModel>
+                    <input type="text" id="name" class="form-control" name="name" ngModel required>
                 </div>
 
                 <!-- input for inredient amount -->
                 <div class="col-sm-2 form-group">
                     <label for="amount">Amount</label>
-                    <input type="number" id="amount" class="form-control" name="amount" ngModel>
+                    <!-- pattern => takes regular expression as a string => here only allowed any number > 0 -->
+                    <input type="number" id="amount" class="form-control" name="amount" ngModel required pattern="^[1-9]+[0-9]*$">
                 </div>
             </div>
             <!-- ingredient action buttons -->
             <div class="row">
                 <div class="col-xs-12">
                     <!-- type="submit" button only allow to submit this form -->
-                    <button type="submit" class="btn btn-success" style="margin-right: 3px;">Add</button>
+                    <button type="submit" class="btn btn-success" style="margin-right: 3px;" [disabled]="!f.valid">Add</button>
                     <button type="button" class="btn btn-danger" style="margin-right: 3px;">Delete</button>
                     <button type="button" class="btn btn-primary">Clear</button>
                 </div>
