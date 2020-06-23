@@ -3,6 +3,8 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { RecipeService } from '../recipe.service';
 
+import { Recipe } from './../recipe.model';
+
 @Component({
   selector: 'app-recipe-edit',
   templateUrl: './recipe-edit.component.html',
@@ -80,7 +82,24 @@ export class RecipeEditComponent implements OnInit {
 
   // get form data here when hit save (i.e type submit) button
   onSubmit() {
-    console.log(this.recipeForm);
+    // construction of new recipe through form input values for recipe
+    const newRecipe = new Recipe(
+      this.recipeForm.value['name'],
+      this.recipeForm.value['imagePath'],
+      this.recipeForm.value['description'],
+      this.recipeForm.value['ingredients']
+    );
+
+    // check mode either edit existing one or add new recipe
+    if (this.editMode) {
+      // update existing recipe with new recipe values comming from form inputs
+      this.recipeService.updateSelectedRecipeFromList(this.recipeId, newRecipe);
+      // can use this.recipeForm.value as 2nd argument above as it has same format as our Recipe model
+    } else {
+      // add new recipe to recipe-list with new recipe values comming from form inputs
+      this.recipeService.addNewRecipeToList(newRecipe);
+      // can use this.recipeForm.value as 2nd argument above as it has same format as our Recipe model
+    }
   }
 
   // add new ingredient control to FormArray of ingredients

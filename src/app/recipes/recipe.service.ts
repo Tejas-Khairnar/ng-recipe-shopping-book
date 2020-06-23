@@ -1,3 +1,4 @@
+import { Subject } from 'rxjs';
 import { ShoppingListService } from './../shopping-list/shopping-list.service';
 import { Injectable } from '@angular/core';
 
@@ -7,6 +8,8 @@ import { Ingredient } from '../shared/ingredient.model';
 // inject shopping list service inside this service
 @Injectable()
 export class RecipeService {
+    // defines subject to inform newly added recipe as we get copy of recipe array and not update UI accordingly
+    recipeChanged = new Subject<Recipe[]>();
 
     // stores recipe based on Recipe blueprint
     private recipes: Recipe[] = [
@@ -48,5 +51,21 @@ export class RecipeService {
     // return single recipe by id/index
     getSingleRecipe(index: number) {
         return this.recipes[index];
+    }
+
+    // add new recipe to recipes array
+    addNewRecipeToList(recipe: Recipe) {
+        // add newly added recipe to recipes array
+        this.recipes.push(recipe);
+        // emit/next new copy of updated recipes array
+        this.recipeChanged.next(this.recipes.slice());
+    }
+
+    // update existing selected recipe
+    updateSelectedRecipeFromList(indexOfRecipe: number, newRecipe: Recipe) {
+        // update existing recipe in recipes array
+        this.recipes[indexOfRecipe] = newRecipe;
+        // emit/next new copy of updated recipes array
+        this.recipeChanged.next(this.recipes.slice());
     }
 }
