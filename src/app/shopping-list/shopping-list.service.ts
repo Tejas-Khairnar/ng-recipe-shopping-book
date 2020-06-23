@@ -45,4 +45,12 @@ export class ShoppingListService {
     getSingleIngredient(index: number) {
         return this.ingredients[index];
     }
+
+    // update selected ingredient
+    updateSelectedIngredientFromList(indexOfIngredient: number, newIngredientValues: Ingredient) {
+        // update existing ingredient entry
+        this.ingredients[indexOfIngredient] = newIngredientValues;
+        // emit/next updated ingredients array
+        this.ingredientsChanged.next(this.ingredients.slice());
+    }
 }
