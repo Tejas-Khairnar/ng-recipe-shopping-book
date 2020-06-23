@@ -1,7 +1,8 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { Ingredient } from './../../shared/ingredient.model';
 import { ShoppingListService } from '../shopping-list.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-shopping-edit',
@@ -9,9 +10,6 @@ import { ShoppingListService } from '../shopping-list.service';
   styleUrls: ['./shopping-edit.component.css']
 })
 export class ShoppingEditComponent implements OnInit {
-  // select DOM HTML element directly in component using local reference variable here
-  @ViewChild('nameInput') nameInputRef: ElementRef;
-  @ViewChild('amountInput') amountInputRef: ElementRef;
 
   // inject shopping list service here
   constructor(private shoppingListService: ShoppingListService) { }
@@ -19,12 +17,11 @@ export class ShoppingEditComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  // called when click add item button
-  onAddItem() {
-    // construct new Ingredient object based on user input
-    const ingName = this.nameInputRef.nativeElement.value;
-    const ingAmount = this.amountInputRef.nativeElement.value;
-    const newIngredient = new Ingredient(ingName, ingAmount);
+  // called when template driven form get submit
+  onAddItem(form: NgForm) {
+    // derived forms value
+    const value = form.value;
+    const newIngredient = new Ingredient(value.name, value.amount);
 
     // add newly added ingredient to ingredient's original array in shopping list service
     this.shoppingListService.addIngredient(newIngredient);
