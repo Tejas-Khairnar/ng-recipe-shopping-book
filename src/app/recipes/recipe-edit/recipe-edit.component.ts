@@ -83,4 +83,16 @@ export class RecipeEditComponent implements OnInit {
     console.log(this.recipeForm);
   }
 
+  // add new ingredient control to FormArray of ingredients
+  onAddIngredient() {
+    // casting important for angular/typescript
+    (<FormArray>this.recipeForm.get('ingredients')).push(
+      // because ingredient is of FormGroup type
+      new FormGroup({
+        // controls for ingredient
+        'name': new FormControl(),
+        'amount': new FormControl()
+      })
+    );
+  }
 }

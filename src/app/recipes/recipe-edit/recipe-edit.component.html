@@ -45,7 +45,7 @@
             <!-- list of ingrediends of recipe -->
             <div class="row">
                 <div class="col-xs-12" formArrayName="ingredients">
-                    <div class="row" *ngFor="let ingredientControl of controls; let i = index" [formGroupName]="i">
+                    <div class="row" *ngFor="let ingredientControl of controls; let i = index" [formGroupName]="i" style="margin-top: 10px;">
                         <!-- ingredient name input field -->
                         <div class="col-xs-8">
                             <input type="text" class="form-control" formControlName="name">
@@ -57,6 +57,13 @@
                         <!-- button to delte selected ingredient -->
                         <div class="col-xs-2">
                             <button class="btn btn-danger">X</button>
+                        </div>
+                    </div>
+                    <hr>
+                    <!-- button to add new ingredient in FormArray -->
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <button type="button" class="btn btn-success" (click)="onAddIngredient()">Add Ingredients</button>
                         </div>
                     </div>
                 </div>
