@@ -85,8 +85,8 @@ export class RecipeEditComponent implements OnInit {
     // construction of new recipe through form input values for recipe
     const newRecipe = new Recipe(
       this.recipeForm.value['name'],
-      this.recipeForm.value['imagePath'],
       this.recipeForm.value['description'],
+      this.recipeForm.value['imagePath'],
       this.recipeForm.value['ingredients']
     );
 
