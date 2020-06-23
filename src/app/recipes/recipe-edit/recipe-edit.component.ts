@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, FormArray } from '@angular/forms';
 import { RecipeService } from '../recipe.service';
 
 @Component({
@@ -15,6 +15,12 @@ export class RecipeEditComponent implements OnInit {
   editMode = false;
   // reactive approach to define and initializing form
   recipeForm: FormGroup;
+
+  // to work FromArray in new angular versions
+  get controls() {
+    // need to type cast as FormArray to know it is array to angular
+    return (this.recipeForm.get('ingredients') as FormArray).controls;
+  }
 
   // inject ActivatesRoute service here to fetch route parameter set into app-routing.module.ts
   constructor(private route: ActivatedRoute, private recipeService: RecipeService) { }
@@ -35,6 +41,7 @@ export class RecipeEditComponent implements OnInit {
     let existingRecipeName = '';
     let existingRecipeImagePath = '';
     let existingRecipeDescription = '';
+    let existingRecipeIngredients = new FormArray([]);
 
     // check if we are in edit mode
     if (this.editMode) {
@@ -44,6 +51,20 @@ export class RecipeEditComponent implements OnInit {
       existingRecipeName = recipe.name;
       existingRecipeImagePath = recipe.imagePath;
       existingRecipeDescription = recipe.description;
+
+      // check if existing recipe contains any ingredients
+      if (recipe['ingredients']) {
+        for (const ingredient of recipe.ingredients) {
+          existingRecipeIngredients.push(
+            // this is for ingredients if present in recipe as group of ingredient name and amount
+            new FormGroup({
+              // controls for ingredients
+              'name': new FormControl(ingredient.name),
+              'amount': new FormControl(ingredient.amount)
+            })
+          );
+        }
+      }
     }
 
     // get outer shell for our form
@@ -52,7 +73,8 @@ export class RecipeEditComponent implements OnInit {
       // new FormControl(initialValue, validators/custome validators, async validators)
       'name': new FormControl(existingRecipeName),
       'imagePath': new FormControl(existingRecipeImagePath),
-      'description': new FormControl(existingRecipeDescription)
+      'description': new FormControl(existingRecipeDescription),
+      'ingredients': existingRecipeIngredients // it is a formArray
     });
   }
 
