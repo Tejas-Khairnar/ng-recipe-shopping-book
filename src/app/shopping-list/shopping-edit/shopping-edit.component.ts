@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { NgForm } from '@angular/forms';
 
@@ -11,6 +11,9 @@ import { ShoppingListService } from '../shopping-list.service';
   styleUrls: ['./shopping-edit.component.css']
 })
 export class ShoppingEditComponent implements OnInit, OnDestroy {
+  // get access to form using its template reference variable
+  @ViewChild('f') shoppingListForm: NgForm;
+
   // store our own created subscription
   subscription: Subscription;
 
@@ -20,6 +23,9 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
   // store selecteditem index emitted from shopping-list component
   editedItemIndex: number;
 
+  // storeitem which we are going to edit from shopping-list
+  editedItemFromShoppingList: Ingredient;
+
   // inject shopping list service here
   constructor(private shoppingListService: ShoppingListService) { }
 
@@ -28,6 +34,13 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
     this.subscription = this.shoppingListService.startedEditing.subscribe((index: number) => {
       this.editedItemIndex = index;
       this.editMode = true;
+      this.editedItemFromShoppingList = this.shoppingListService.getSingleIngredient(index);
+
+      // display existing form values to edit it
+      this.shoppingListForm.setValue({
+        name: this.editedItemFromShoppingList.name,
+        amount: this.editedItemFromShoppingList.amount
+      });
     });
   }
 
