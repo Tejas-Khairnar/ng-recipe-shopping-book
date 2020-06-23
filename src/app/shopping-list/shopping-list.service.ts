@@ -53,4 +53,12 @@ export class ShoppingListService {
         // emit/next updated ingredients array
         this.ingredientsChanged.next(this.ingredients.slice());
     }
+
+    // delete selected ingredient
+    deleteSelectedIngredientFromList(indexOfIngredient: number) {
+        // delete 1 item from ingredients array using splice
+        this.ingredients.splice(indexOfIngredient, 1);
+        // emit/next updated ingredients array
+        this.ingredientsChanged.next(this.ingredients.slice());
+    }
 }
