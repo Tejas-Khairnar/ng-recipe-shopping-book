@@ -6,6 +6,9 @@ export class ShoppingListService {
     // its emit(next) new ingredients array
     ingredientsChanged = new Subject<Ingredient[]>();
 
+    // inform shopping-edit component which item index get selected from shopping-list component
+    startedEditing = new Subject<number>();
+
     // stores ingredients based on Ingredients blueprint
     private ingredients: Ingredient[] = [
         new Ingredient('Apple', 5),
