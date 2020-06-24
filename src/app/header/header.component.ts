@@ -13,6 +13,11 @@ export class HeaderComponent {
 
   // send data to firebase backend using data storage service
   onSaveDataToBackend() {
-    this.dataStoraheService.storeRecipeToFirebase();
+    this.dataStoraheService.storeRecipesToFirebase();
+  }
+
+  // fetch data from firebase backend using data storae service
+  onFetchDataFromBackend() {
+    this.dataStoraheService.fetchRecipesFromFirebase();
   }
 }

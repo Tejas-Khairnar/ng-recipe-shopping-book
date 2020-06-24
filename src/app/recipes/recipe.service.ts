@@ -76,4 +76,11 @@ export class RecipeService {
         // emit/next new copy of updated recipes array
         this.recipeChanged.next(this.recipes.slice());
     }
+
+    // override all existing recipe array with new recipe array comming from firebase backend
+    overrideExistingRecipesWithBackend(recipes: Recipe[]) {
+        this.recipes = recipes;
+        // emit/next updated recipes
+        this.recipeChanged.next(this.recipes.slice());
+    }
 }

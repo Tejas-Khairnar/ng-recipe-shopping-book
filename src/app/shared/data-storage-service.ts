@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { RecipeService } from '../recipes/recipe.service';
+import { Recipe } from '../recipes/recipe.model';
 
 @Injectable({
     providedIn: 'root' // alternative for adding service in app.module providers: []
@@ -13,8 +14,8 @@ export class DataStoraeService {
     // inject HttpClient service here
     constructor(private http: HttpClient, private recipeService: RecipeService) { }
 
-    // store recipe to firebase database
-    storeRecipeToFirebase() {
+    // store all recipe to firebase database
+    storeRecipesToFirebase() {
         // get recipes array from recipe service
         const recipes = this.recipeService.getRecipes();
         // this.http.post => to store 1 recipe
@@ -23,6 +24,14 @@ export class DataStoraeService {
         this.http.put('https://ng-recipe-shopping-book-df269.firebaseio.com/recipes.json', recipes)
             .subscribe(response => {
                 console.log(response); // this res is not needed in any component so subscribe here
+            });
+    }
+
+    // fetch all recipes from firebase
+    fetchRecipesFromFirebase() {
+        this.http.get<Recipe[]>('https://ng-recipe-shopping-book-df269.firebaseio.com/recipes.json')
+            .subscribe(recipes => {
+                this.recipeService.overrideExistingRecipesWithBackend(recipes);
             });
     }
 }
