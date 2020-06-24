@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { DataStoraeService } from '../shared/data-storage-service';
+import { DataStorageService } from '../shared/data-storage-service';
 
 @Component({
   selector: 'app-header',
@@ -9,7 +9,7 @@ import { DataStoraeService } from '../shared/data-storage-service';
 export class HeaderComponent {
 
   // inject DataStorageService for accessing http
-  constructor(private dataStoraheService: DataStoraeService) { }
+  constructor(private dataStoraheService: DataStorageService) { }
 
   // send data to firebase backend using data storage service
   onSaveDataToBackend() {
@@ -18,6 +18,6 @@ export class HeaderComponent {
 
   // fetch data from firebase backend using data storae service
   onFetchDataFromBackend() {
-    this.dataStoraheService.fetchRecipesFromFirebase();
+    this.dataStoraheService.fetchRecipesFromFirebase().subscribe();
   }
 }
