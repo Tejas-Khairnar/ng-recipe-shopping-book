@@ -2,6 +2,7 @@
 
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/operators';
 
 import { RecipeService } from '../recipes/recipe.service';
 import { Recipe } from '../recipes/recipe.model';
@@ -30,6 +31,14 @@ export class DataStoraeService {
     // fetch all recipes from firebase
     fetchRecipesFromFirebase() {
         this.http.get<Recipe[]>('https://ng-recipe-shopping-book-df269.firebaseio.com/recipes.json')
+            // transforming original response to new response here
+            .pipe(map(recipes => {
+                return recipes.map(recipe => {
+                    // if ingredients not present then add as empty array
+                    return { ...recipe, ingredients: recipe.ingredients ? recipe.ingredients : [] }
+                })
+            }))
+            // get new response from above pipe()
             .subscribe(recipes => {
                 this.recipeService.overrideExistingRecipesWithBackend(recipes);
             });
