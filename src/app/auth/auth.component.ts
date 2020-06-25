@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
 @Component({
     selector: 'app-auth',
@@ -11,5 +12,12 @@ export class AuthComponent {
     // switch button title between login or sign up mode
     onSwitchMode() {
         this.isLoginMode = !this.isLoginMode;
+    }
+
+    // get form data
+    onSubmit(form: NgForm) {
+        console.log(form.value);
+        // reset form values when we submit it
+        form.reset();
     }
 }
