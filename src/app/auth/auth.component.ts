@@ -4,4 +4,12 @@ import { Component } from '@angular/core';
     selector: 'app-auth',
     templateUrl: './auth.component.html'
 })
-export class AuthComponent { }
+export class AuthComponent {
+    // flag to check if user login or not
+    isLoginMode = true;
+
+    // switch button title between login or sign up mode
+    onSwitchMode() {
+        this.isLoginMode = !this.isLoginMode;
+    }
+}
