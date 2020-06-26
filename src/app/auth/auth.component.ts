@@ -10,6 +10,10 @@ import { AuthService } from './auth.service';
 export class AuthComponent {
     // flag to check if user login or not
     isLoginMode = true;
+    // loading indicator
+    isLoading = false;
+    // error message if any
+    error: string = null;
 
     // inject auth service here
     constructor(private authService: AuthService) { }
@@ -29,6 +33,9 @@ export class AuthComponent {
         const email = form.value.email;
         const password = form.value.password;
 
+        // start loading spinner here
+        this.isLoading = true;
+
         // check mode login or sign up here
         if (this.isLoginMode) {
             // login user here
@@ -37,8 +44,12 @@ export class AuthComponent {
             // sign new user here
             this.authService.signUpNewUser(email, password).subscribe(resData => {
                 console.log(resData);
+                // stop loading spinner here
+                this.isLoading = false;
             }, error => {
-                console.log(error);
+                this.error = 'An error occured';
+                // stop loading spinner here
+                this.isLoading = false;
             });
         }
 
