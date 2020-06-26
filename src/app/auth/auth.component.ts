@@ -46,10 +46,10 @@ export class AuthComponent {
                 console.log(resData);
                 // stop loading spinner here
                 this.isLoading = false;
-            }, error => {
-                this.error = 'An error occured';
+            }, errorMessage => {
                 // stop loading spinner here
                 this.isLoading = false;
+                this.error = errorMessage;
             });
         }
 
