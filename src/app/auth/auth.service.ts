@@ -3,13 +3,14 @@ import { HttpClient } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 
-interface AuthResponseData {
+export interface AuthResponseData {
     kind: string;
     idToken: string;
     email: string;
     refreshToken: string;
     expiresIn: string;
     localId: string;
+    registered?: boolean; // required for login post response
 }
 
 @Injectable({ providedIn: 'root' })
@@ -41,6 +42,18 @@ export class AuthService {
                 }
                 return throwError(errorMessae);
             })
+        );
+    }
+
+    // login user after sign up process
+    loginUser(email: string, password: string) {
+        return this.http.post<AuthResponseData>(
+            'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCfzUsihAF9EYWzUNKZtyI1e5E6b6sk7Og',
+            {
+                email: email,
+                password: password,
+                returnSecureToken: true
+            }
         );
     }
 }

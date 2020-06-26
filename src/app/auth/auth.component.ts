@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Observable } from 'rxjs';
 
-import { AuthService } from './auth.service';
+import { AuthService, AuthResponseData } from './auth.service';
 
 @Component({
     selector: 'app-auth',
@@ -36,22 +37,28 @@ export class AuthComponent {
         // start loading spinner here
         this.isLoading = true;
 
+        // outsource subcription blocks for sign up and login
+        let authOservable: Observable<AuthResponseData>;
+
         // check mode login or sign up here
         if (this.isLoginMode) {
             // login user here
-            // ...
+            authOservable = this.authService.loginUser(email, password);
         } else {
             // sign new user here
-            this.authService.signUpNewUser(email, password).subscribe(resData => {
-                console.log(resData);
-                // stop loading spinner here
-                this.isLoading = false;
-            }, errorMessage => {
-                // stop loading spinner here
-                this.isLoading = false;
-                this.error = errorMessage;
-            });
+            authOservable = this.authService.signUpNewUser(email, password);
         }
+
+        // subscribing auth observable only for 1 time for both sign up and login
+        authOservable.subscribe(resData => {
+            console.log(resData);
+            // stop loading spinner here
+            this.isLoading = false;
+        }, errorMessage => {
+            // stop loading spinner here
+            this.isLoading = false;
+            this.error = errorMessage;
+        })
 
         // reset form values when we submit it
         form.reset();
