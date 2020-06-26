@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 
@@ -29,19 +29,7 @@ export class AuthService {
             }
         ).pipe(
             // error handling using rxjs operators
-            catchError(errorRes => {
-                let errorMessae = 'An unknown error occurred!!';
-                if (!errorRes.error || !errorRes.error.error) {
-                    return throwError(errorMessae);
-                }
-                // display appropriate error message
-                switch (errorRes.error.error.message) {
-                    case 'EMAIL_EXISTS':
-                        errorMessae = 'This email is exists already';
-                        break;
-                }
-                return throwError(errorMessae);
-            })
+            catchError(this.errorHandling)
         );
     }
 
@@ -54,6 +42,30 @@ export class AuthService {
                 password: password,
                 returnSecureToken: true
             }
+        ).pipe(
+            // error handling using rxjs operators
+            catchError(this.errorHandling)
         );
+    }
+
+    // shared error handling code for sign up and login method
+    private errorHandling(errorRes: HttpErrorResponse) {
+        let errorMessae = 'An unknown error occurred!!';
+        if (!errorRes.error || !errorRes.error.error) {
+            return throwError(errorMessae);
+        }
+        // display appropriate error message
+        switch (errorRes.error.error.message) {
+            case 'EMAIL_EXISTS':
+                errorMessae = 'This email is exists already';
+                break;
+            case 'EMAIL_NOT_FOUND':
+                errorMessae = 'This email doen not exist'
+                break;
+            case 'INVALID_PASSWORD':
+                errorMessae = 'This password is not valid'
+                break;
+        }
+        return throwError(errorMessae);
     }
 }
