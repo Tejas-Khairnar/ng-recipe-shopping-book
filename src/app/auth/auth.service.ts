@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { catchError } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
+import { throwError, Subject } from 'rxjs';
+
+import { User } from './user.model';
 
 export interface AuthResponseData {
     kind: string;
@@ -15,6 +17,9 @@ export interface AuthResponseData {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+    // store new user data as rxjs subject
+    user = new Subject<User>();
+
     // inject httpClient service here
     constructor(private http: HttpClient) { }
 
@@ -29,7 +34,11 @@ export class AuthService {
             }
         ).pipe(
             // error handling using rxjs operators
-            catchError(this.errorHandling)
+            catchError(this.errorHandling),
+            // only allow to run some without changing actual response here
+            tap(resData => {
+                this.userAuthentication(resData.email, resData.localId, resData.idToken, +resData.expiresIn);
+            })
         );
     }
 
@@ -44,7 +53,11 @@ export class AuthService {
             }
         ).pipe(
             // error handling using rxjs operators
-            catchError(this.errorHandling)
+            catchError(this.errorHandling),
+            // only allow to run some without changing actual response here
+            tap(resData => {
+                this.userAuthentication(resData.email, resData.localId, resData.idToken, +resData.expiresIn);
+            })
         );
     }
 
@@ -67,5 +80,16 @@ export class AuthService {
                 break;
         }
         return throwError(errorMessae);
+    }
+
+    // shared user authentication code for sign up and login method
+    private userAuthentication(email: string, userId: string, token: string, expiresIn: number) {
+        // create new user here
+        // new Date().getTime() => timestamp in milliseconds
+        // +resData.expiresIn * 1000 => convert seconds to milliseconds
+        const expirationData = new Date(new Date().getTime() + expiresIn * 1000);
+        const user = new User(email, userId, token, expirationData)
+        // emit/next this newly created user using rxjs subject
+        this.user.next(user);
     }
 }
