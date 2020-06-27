@@ -31,30 +31,16 @@ export class DataStorageService {
 
     // fetch all recipes from firebase
     fetchRecipesFromFirebase() {
-        // take(1) => only return 1 value and then automatically unsubscribe the subscription here
-        // exhaustMap => waits for 1st observable to complete then it take previous observable response for 2nd observable
-        // and return last observale response to subscribers
-        return this.authService.user
+        return this.http.get<Recipe[]>('https://ng-recipe-shopping-book-df269.firebaseio.com/recipes.json')
             .pipe(
-                take(1),
-                exhaustMap(user => {
-                    return this.http.get<Recipe[]>('https://ng-recipe-shopping-book-df269.firebaseio.com/recipes.json',
-                        {
-                            // for firebase add token as params for other may add as headers or same as here
-                            params: new HttpParams().set('auth', user.token)
-                        })
-                }
-                ),
                 map(recipes => {
                     return recipes.map(recipe => {
                         // if ingredients not present then add as empty array
                         return { ...recipe, ingredients: recipe.ingredients ? recipe.ingredients : [] }
                     })
-                }
-                ),
+                }),
                 tap(recipes => {
                     this.recipeService.overrideExistingRecipesWithBackend(recipes);
-                })
-            )
+                }))
     }
 }
