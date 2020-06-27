@@ -66,4 +66,9 @@ export class AuthComponent {
         // reset form values when we submit it
         form.reset();
     }
+
+    // close modal here
+    onModalClose() {
+        this.error = null;
+    }
 }
