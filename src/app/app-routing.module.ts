@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 
 const routes: Routes = [
   // here route for first stage of app, redirect to /recipes and load RecipesComponent initially
@@ -15,7 +15,8 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)], // defines out above const as first level routes
+  // 2nd argument to tell angular preload all modules as fast as possible inspite having lazy load
+  imports: [RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })], // defines out above const as first level routes
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
