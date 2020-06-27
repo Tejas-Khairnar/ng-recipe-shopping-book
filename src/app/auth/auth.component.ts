@@ -1,16 +1,20 @@
-import { Component, ComponentFactoryResolver } from '@angular/core';
+import { Component, ComponentFactoryResolver, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 
 import { AuthService, AuthResponseData } from './auth.service';
 import { AlertComponent } from '../shared/alert/alert.component';
+import { PlaceholderDirective } from './../shared/placeholder/placeholder.directive';
 
 @Component({
     selector: 'app-auth',
     templateUrl: './auth.component.html'
 })
 export class AuthComponent {
+    // get access to place in DOM where we render alert component in DOM
+    @ViewChild(PlaceholderDirective) alertHost: PlaceholderDirective;
+
     // flag to check if user login or not
     isLoginMode = true;
     // loading indicator
@@ -82,5 +86,14 @@ export class AuthComponent {
 
         // user component factory resolver to get access to component factory
         const alertComponentFactory = this.componentFactoryResolver.resolveComponentFactory(AlertComponent);
+
+        // get access to ViewContainerRef of our host component
+        const hostViewContainerRef = this.alertHost.viewContainerRef;
+
+        // clear everything that might be render before if any
+        hostViewContainerRef.clear();
+
+        // create our component at that place using component factory and viewContainerRef
+        hostViewContainerRef.createComponent(alertComponentFactory);
     }
 }

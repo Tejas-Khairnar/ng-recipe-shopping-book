@@ -11,6 +11,9 @@
         </div> -->
         <!-- <app-alert [message]="error" *ngIf="error" (close)="onModalClose()"></app-alert> -->
 
+        <!-- render alert component here programatically -->
+        <ng-template appPlaceholder></ng-template>
+
         <!-- authentication form -->
         <form (ngSubmit)="onSubmit(f)" #f="ngForm" *ngIf="!isLoading">
             <div class="form-group">

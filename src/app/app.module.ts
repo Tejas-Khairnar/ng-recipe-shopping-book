@@ -57,6 +57,9 @@ import { PlaceholderDirective } from './shared/placeholder/placeholder.directive
       multi: true // allow multiple interceptors in application
     }
   ],
+  entryComponents: [
+    AlertComponent // automatically added by angular through programatical instructions
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
