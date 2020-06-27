@@ -36,6 +36,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.dataStoraheService.fetchRecipesFromFirebase().subscribe();
   }
 
+  // logout user using auth service
+  onUserLogout() {
+    this.authService.logoutUser();
+  }
+
   // destroy our own subscription here
   ngOnDestroy() {
     // cleanup work 
