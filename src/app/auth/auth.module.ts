@@ -11,7 +11,8 @@ import { SharedModule } from '../shared/shared.module';
         FormsModule,
         SharedModule,
         RouterModule.forChild([
-            { path: 'auth', component: AuthComponent } // localhost:4200/auth
+            // empty this path here and add it to app-routing module to load this module lazily
+            { path: '', component: AuthComponent } // localhost:4200/auth
         ])
     ]
 })

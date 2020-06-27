@@ -6,6 +6,12 @@ const routes: Routes = [
   // pathMatch: 'full' => check specific empty route only, redirect if only full path is empty
   // pathMatch: 'prefix' => default option, include empty route in all other routes
   { path: '', redirectTo: '/recipes', pathMatch: 'full' }, // localhost:4200
+
+  // routes for lazy loading our other feature modules in application here
+  // { path: 'recipes', loadChildren: './recipes/recipes.module#RecipesModule' } // older approach
+  { path: 'recipes', loadChildren: () => import('./recipes/recipes.module').then(m => m.RecipesModule) }, // new approach
+  { path: 'shopping-list', loadChildren: () => import('./shopping-list/shopping-list.module').then(m => m.ShoppingListModule) },
+  { path: 'auth', loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule) }
 ];
 
 @NgModule({

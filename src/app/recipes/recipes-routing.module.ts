@@ -11,8 +11,9 @@ import { RecipesResolverService } from './recipes-resolver.service';
 
 // setup routes only related to Recipes
 const recipesRoutes: Routes = [
+    // empty this path here and add it to app-routing module to load this module lazily
     {
-        path: 'recipes', component: RecipesComponent, canActivate: [AuthGuard],
+        path: '', component: RecipesComponent, canActivate: [AuthGuard],
         // here all child routes of Recipes
         children: [
             { path: '', component: RecipeStartComponent }, // localhost:4200, very first time when load

@@ -8,7 +8,8 @@ import { SharedModule } from '../shared/shared.module';
 
 // route related to shopping list only
 const shoppingListRoutes: Routes = [
-    { path: 'shopping-list', component: ShoppingListComponent }, // localhost:4200/shopping-list
+    // empty this path here and add it to app-routing module to load this module lazily
+    { path: '', component: ShoppingListComponent }, // localhost:4200/shopping-list
 ];
 
 @NgModule({
