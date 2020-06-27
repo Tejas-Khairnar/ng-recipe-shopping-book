@@ -1,6 +1,6 @@
-import { Component, ComponentFactoryResolver, ViewChild } from '@angular/core';
+import { Component, ComponentFactoryResolver, ViewChild, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 
 import { AuthService, AuthResponseData } from './auth.service';
@@ -11,7 +11,10 @@ import { PlaceholderDirective } from './../shared/placeholder/placeholder.direct
     selector: 'app-auth',
     templateUrl: './auth.component.html'
 })
-export class AuthComponent {
+export class AuthComponent implements OnDestroy {
+    // store subscription of alert close event
+    private closeSub: Subscription;
+
     // get access to place in DOM where we render alert component in DOM
     @ViewChild(PlaceholderDirective) alertHost: PlaceholderDirective;
 
@@ -94,6 +97,24 @@ export class AuthComponent {
         hostViewContainerRef.clear();
 
         // create our component at that place using component factory and viewContainerRef
-        hostViewContainerRef.createComponent(alertComponentFactory);
+        // store reference/pointer of newly created component here
+        const componentRef = hostViewContainerRef.createComponent(alertComponentFactory);
+
+        // get access to instance of newly created component to access its properties/methods
+        componentRef.instance.message = message;
+        this.closeSub = componentRef.instance.close.subscribe(() => {
+            // clear close event subscription
+            this.closeSub.unsubscribe();
+            // remove alert component
+            hostViewContainerRef.clear();
+        });
+    }
+
+    // clear close event subscription when AuthComponent get destroyed
+    ngOnDestroy() {
+        // clean up close subscription here if present
+        if (this.closeSub) {
+            this.closeSub.unsubscribe();
+        }
     }
 }
