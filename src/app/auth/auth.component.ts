@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 import { AuthService, AuthResponseData } from './auth.service';
 
@@ -17,7 +18,7 @@ export class AuthComponent {
     error: string = null;
 
     // inject auth service here
-    constructor(private authService: AuthService) { }
+    constructor(private authService: AuthService, private router: Router) { }
 
     // switch button title between login or sign up mode
     onSwitchMode() {
@@ -54,6 +55,8 @@ export class AuthComponent {
             console.log(resData);
             // stop loading spinner here
             this.isLoading = false;
+            // on successfull login redirect user to recipes page
+            this.router.navigate(['/recipes']);
         }, errorMessage => {
             // stop loading spinner here
             this.isLoading = false;

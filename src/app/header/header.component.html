@@ -18,15 +18,17 @@
             <!-- left side links -->
             <ul class="nav navbar-nav">
                 <!-- ansolute path must specify here -->
-                <li routerLinkActive="active"><a routerLink="/recipes">Recipes</a></li>
-                <li routerLinkActive="active"><a routerLink="/auth">Authenticate</a></li>
+                <li routerLinkActive="active" *ngIf="isUserAuthenticated"><a routerLink="/recipes">Recipes</a></li>
+                <li routerLinkActive="active" *ngIf="!isUserAuthenticated"><a routerLink="/auth">Authenticate</a></li>
                 <li routerLinkActive="active"><a routerLink="/shopping-list">Shopping List</a></li>
             </ul>
 
             <!-- right side links -->
             <ul class="nav navbar-nav navbar-right">
+                <!-- route for logout user -->
+                <li *ngIf="isUserAuthenticated"><a style="cursor: pointer;">Logout</a></li>
                 <!-- place dropdown as an attribute to element -->
-                <li class="dropdown" appDropdown>
+                <li class="dropdown" appDropdown *ngIf="isUserAuthenticated">
                     <!-- link to open dropdown -->
                     <a style="cursor: pointer;" class="dropdown-toggle" role="button">Manage <span class="caret"></span></a>
                     <ul class="dropdown-menu">
