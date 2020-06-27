@@ -27,14 +27,6 @@ import { RecipesRoutingModule } from './recipes-routing.module';
         ReactiveFormsModule,
         RecipesRoutingModule
     ],
-    // exports all aboce components to main module where this module includes main module's imports array
-    exports: [
-        RecipesComponent,
-        RecipeListComponent,
-        RecipeDetailComponent,
-        RecipeItemComponent,
-        RecipeStartComponent,
-        RecipeEditComponent
-    ]
+    // no need of exports array here because components loaded using routes
 })
 export class RecipesModule { }
