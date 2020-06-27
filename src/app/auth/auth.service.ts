@@ -63,6 +63,23 @@ export class AuthService {
         );
     }
 
+    // automatically login user here when application starts or page reload
+    autoLogin() {
+        // get user form brouser's local storage
+        // JSON.parse => conver json string format to JS object back
+        const userData: { email: string, id: string, _token: string, _tokenExpirationDate: string } = JSON.parse(localStorage.getItem('userData'));
+        if (!userData) {
+            return;
+        }
+        // load existing user based on local storage data
+        const loadedUser = new User(userData.email, userData.id, userData._token, new Date(userData._tokenExpirationDate));
+        // check for valid token or not (token is getter either return null or token)
+        if (loadedUser.token) {
+            // emit existing user again
+            this.user.next(loadedUser);
+        }
+    }
+
     // log out user
     logoutUser() {
         // pass user as null here
@@ -101,5 +118,8 @@ export class AuthService {
         const user = new User(email, userId, token, expirationData)
         // emit/next this newly created user using rxjs subject
         this.user.next(user);
+        // store user to browser's localStorage to persist it for page reload, browser window close
+        // JSON.stringify(user) => convert JS user object to json string format
+        localStorage.setItem('userData', JSON.stringify(user));
     }
 }
