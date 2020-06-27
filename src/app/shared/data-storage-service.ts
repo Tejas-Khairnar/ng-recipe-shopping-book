@@ -1,11 +1,12 @@
 // only to focus on http functionality here
 
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { map, tap } from 'rxjs/operators';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { map, tap, take, exhaustMap } from 'rxjs/operators';
 
 import { RecipeService } from '../recipes/recipe.service';
 import { Recipe } from '../recipes/recipe.model';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({
     providedIn: 'root' // alternative for adding service in app.module providers: []
@@ -13,7 +14,7 @@ import { Recipe } from '../recipes/recipe.model';
 export class DataStorageService {
 
     // inject HttpClient service here
-    constructor(private http: HttpClient, private recipeService: RecipeService) { }
+    constructor(private http: HttpClient, private recipeService: RecipeService, private authService: AuthService) { }
 
     // store all recipe to firebase database
     storeRecipesToFirebase() {
@@ -30,15 +31,30 @@ export class DataStorageService {
 
     // fetch all recipes from firebase
     fetchRecipesFromFirebase() {
-        return this.http.get<Recipe[]>('https://ng-recipe-shopping-book-df269.firebaseio.com/recipes.json')
-            // transforming original response to new response here
-            .pipe(map(recipes => {
-                return recipes.map(recipe => {
-                    // if ingredients not present then add as empty array
-                    return { ...recipe, ingredients: recipe.ingredients ? recipe.ingredients : [] }
+        // take(1) => only return 1 value and then automatically unsubscribe the subscription here
+        // exhaustMap => waits for 1st observable to complete then it take previous observable response for 2nd observable
+        // and return last observale response to subscribers
+        return this.authService.user
+            .pipe(
+                take(1),
+                exhaustMap(user => {
+                    return this.http.get<Recipe[]>('https://ng-recipe-shopping-book-df269.firebaseio.com/recipes.json',
+                        {
+                            // for firebase add token as params for other may add as headers or same as here
+                            params: new HttpParams().set('auth', user.token)
+                        })
+                }
+                ),
+                map(recipes => {
+                    return recipes.map(recipe => {
+                        // if ingredients not present then add as empty array
+                        return { ...recipe, ingredients: recipe.ingredients ? recipe.ingredients : [] }
+                    })
+                }
+                ),
+                tap(recipes => {
+                    this.recipeService.overrideExistingRecipesWithBackend(recipes);
                 })
-            }), tap(recipes => {
-                this.recipeService.overrideExistingRecipesWithBackend(recipes);
-            }));
+            )
     }
 }

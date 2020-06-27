@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, tap } from 'rxjs/operators';
-import { throwError, Subject } from 'rxjs';
+import { throwError, BehaviorSubject } from 'rxjs';
 
 import { User } from './user.model';
 
@@ -18,7 +18,8 @@ export interface AuthResponseData {
 @Injectable({ providedIn: 'root' })
 export class AuthService {
     // store new user data as rxjs subject
-    user = new Subject<User>();
+    // BehaviorSubject => also provide subscribers immedieat access to previously emmited value even if they don't subscribe at the point when that value even emitted
+    user = new BehaviorSubject<User>(null);
 
     // inject httpClient service here
     constructor(private http: HttpClient) { }
