@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, ComponentFactoryResolver } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 
 import { AuthService, AuthResponseData } from './auth.service';
+import { AlertComponent } from '../shared/alert/alert.component';
 
 @Component({
     selector: 'app-auth',
@@ -18,7 +19,7 @@ export class AuthComponent {
     error: string = null;
 
     // inject auth service here
-    constructor(private authService: AuthService, private router: Router) { }
+    constructor(private authService: AuthService, private router: Router, private componentFactoryResolver: ComponentFactoryResolver) { }
 
     // switch button title between login or sign up mode
     onSwitchMode() {
@@ -61,6 +62,8 @@ export class AuthComponent {
             // stop loading spinner here
             this.isLoading = false;
             this.error = errorMessage;
+            // call alert component here when we get an error
+            this.showErrorAlert(errorMessage);
         })
 
         // reset form values when we submit it
@@ -70,5 +73,14 @@ export class AuthComponent {
     // close modal here
     onModalClose() {
         this.error = null;
+    }
+
+    // show alert component programatically
+    private showErrorAlert(message: string) {
+        // valid for TS but not works in Angular
+        // const alertComp = new AlertComponent();
+
+        // user component factory resolver to get access to component factory
+        const alertComponentFactory = this.componentFactoryResolver.resolveComponentFactory(AlertComponent);
     }
 }

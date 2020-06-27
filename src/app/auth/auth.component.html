@@ -9,7 +9,7 @@
         <!-- <div class="alert alert-danger" *ngIf="error">
             <p>{{ error }}</p>
         </div> -->
-        <app-alert [message]="error" *ngIf="error" (close)="onModalClose()"></app-alert>
+        <!-- <app-alert [message]="error" *ngIf="error" (close)="onModalClose()"></app-alert> -->
 
         <!-- authentication form -->
         <form (ngSubmit)="onSubmit(f)" #f="ngForm" *ngIf="!isLoading">
