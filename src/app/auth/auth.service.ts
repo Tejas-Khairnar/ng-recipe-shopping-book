@@ -18,6 +18,9 @@ export interface AuthResponseData {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+    // store token expiration duration here
+    private tokenExpirationTimer: any;
+
     // store new user data as rxjs subject
     // BehaviorSubject => also provide subscribers immedieat access to previously emmited value even if they don't subscribe at the point when that value even emitted
     user = new BehaviorSubject<User>(null);
@@ -77,6 +80,9 @@ export class AuthService {
         if (loadedUser.token) {
             // emit existing user again
             this.user.next(loadedUser);
+            // calculate token expiration duration here
+            const expirationDuration = new Date(userData._tokenExpirationDate).getTime() - new Date().getTime();
+            this.autoLogout(expirationDuration);
         }
     }
 
@@ -86,6 +92,23 @@ export class AuthService {
         this.user.next(null);
         // redirect to authenticate page for login again
         this.router.navigate(['/auth']);
+        // clear userData from browser's localStorage here
+        // localStorage.clear(); // for clear all data
+        localStorage.removeItem('userData'); // for clear specific data
+        // clear token expiration timer if present
+        if (this.tokenExpirationTimer) {
+            // clear timer of setTimeout here
+            clearTimeout(this.tokenExpirationTimer);
+        }
+        this.tokenExpirationTimer = null;
+    }
+
+    // automatically logout user here when token get expires
+    autoLogout(expirationDuration: number) {
+        this.tokenExpirationTimer = setTimeout(() => {
+            // after expirationDuration milli seconds call logout method automatically
+            this.logoutUser();
+        }, expirationDuration);
     }
 
     // shared error handling code for sign up and login method
@@ -118,6 +141,8 @@ export class AuthService {
         const user = new User(email, userId, token, expirationData)
         // emit/next this newly created user using rxjs subject
         this.user.next(user);
+        // timer will start here for token epiration
+        this.autoLogout(expiresIn * 1000); // convert expiresIn to milliseconds
         // store user to browser's localStorage to persist it for page reload, browser window close
         // JSON.stringify(user) => convert JS user object to json string format
         localStorage.setItem('userData', JSON.stringify(user));
