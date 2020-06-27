@@ -8,6 +8,7 @@ import { RecipeDetailComponent } from './recipes/recipe-detail/recipe-detail.com
 import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component';
 import { RecipesResolverService } from './recipes/recipes-resolver.service';
 import { AuthComponent } from './auth/auth.component';
+import { AuthGuard } from './auth/auth.guard';
 
 
 const routes: Routes = [
@@ -17,7 +18,7 @@ const routes: Routes = [
   { path: '', redirectTo: '/recipes', pathMatch: 'full' }, // localhost:4200
   // here the main routes for components in app
   {
-    path: 'recipes', component: RecipesComponent,
+    path: 'recipes', component: RecipesComponent, canActivate: [AuthGuard],
     // here all child routes of Recipes
     children: [
       { path: '', component: RecipeStartComponent }, // localhost:4200, very first time when load
