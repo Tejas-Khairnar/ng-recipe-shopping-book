@@ -1,9 +1,11 @@
 import { Subject } from 'rxjs';
 import { ShoppingListService } from './../shopping-list/shopping-list.service';
 import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
 
 import { Recipe } from './recipe.model';
 import { Ingredient } from '../shared/ingredient.model';
+import * as ShoppingListActions from '../store/shopping-list.actions';
 
 // inject shopping list service inside this service
 @Injectable()
@@ -34,8 +36,8 @@ export class RecipeService {
     // ];
     private recipes: Recipe[] = [];
 
-    // inject shopping list service here
-    constructor(private shoppingListService: ShoppingListService) { }
+    // inject shopping list service here, inject Store of apllication state
+    constructor(private shoppingListService: ShoppingListService, private store: Store<{ shoppingList: { ingredients: Ingredient[] } }>) { }
 
     // return recipes outside
     getRecipes() {
@@ -46,7 +48,11 @@ export class RecipeService {
 
     // add ingredients to shopping list
     addIngredientsToShoppingList(ingredients: Ingredient[]) {
-        this.shoppingListService.addIngredientsFromRecipe(ingredients);
+        // this.shoppingListService.addIngredientsFromRecipe(ingredients);
+
+        // using NgRx approach here
+        // dispatch new action by passing ingredients array to store
+        this.store.dispatch(new ShoppingListActions.AddIngredients(ingredients));
     }
 
     // return single recipe by id/index
