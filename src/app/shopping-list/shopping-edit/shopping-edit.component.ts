@@ -1,9 +1,12 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { NgForm } from '@angular/forms';
+import { Store } from '@ngrx/store';
 
 import { Ingredient } from './../../shared/ingredient.model';
 import { ShoppingListService } from '../shopping-list.service';
+import * as ShoppingListActions from '../../store/shopping-list.actions';
+import { ShoppingListReducer } from 'src/app/store/shopping-list.reducer';
 
 @Component({
   selector: 'app-shopping-edit',
@@ -26,8 +29,8 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
   // storeitem which we are going to edit from shopping-list
   editedItemFromShoppingList: Ingredient;
 
-  // inject shopping list service here
-  constructor(private shoppingListService: ShoppingListService) { }
+  // inject shopping list service here, inject Store of apllication state
+  constructor(private shoppingListService: ShoppingListService, private store: Store<{ shoppingList: { ingredients: Ingredient[] } }>) { }
 
   ngOnInit(): void {
     // get index of selected item emiting by subject from shopping-list
@@ -55,8 +58,12 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
       // update existing ingredient to ingredient's original array in shopping list service
       this.shoppingListService.updateSelectedIngredientFromList(this.editedItemIndex, newIngredient);
     } else {
+      // using NgRx state management approach now, by dispatching actions here
+      // dispatch object based as reducer class
+      this.store.dispatch(new ShoppingListActions.AddIngredient(newIngredient));
+
       // add newly added ingredient to ingredient's original array in shopping list service
-      this.shoppingListService.addIngredient(newIngredient);
+      // this.shoppingListService.addIngredient(newIngredient);
     }
 
     // change edit mode

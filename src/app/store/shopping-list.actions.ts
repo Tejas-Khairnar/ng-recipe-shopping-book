@@ -10,5 +10,7 @@ export class AddIngredient implements Action {
     // provided by Action and it is identifire for action
     // readonly => must not be edited from outside
     readonly type = ADD_INGREDIENT;
-    readonly payload: Ingredient
+
+    // accept payload as argument in constructor
+    constructor(public payload: Ingredient) { }
 }

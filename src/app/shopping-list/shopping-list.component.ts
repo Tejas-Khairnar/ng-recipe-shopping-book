@@ -21,6 +21,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   constructor(private shoppingListService: ShoppingListService, private store: Store<{ shoppingList: { ingredients: Ingredient[] } }>) { }
 
   ngOnInit(): void {
+    // Fetching ingredients from NgRx state management store
     // return observable by store.select ans stored in ingredients property
     this.ingredients = this.store.select('shoppingList');
 
