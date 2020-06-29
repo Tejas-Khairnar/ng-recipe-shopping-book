@@ -20,6 +20,8 @@ export function ShoppingListReducer(state = initialSate, action: ShoppingListAct
                 // copy previous ingredients array here
                 ingredients: [...state.ingredients, action.payload]
             }
-
+        // for first time when application reload or else part in all above cases
+        default:
+            return state;
     }
 }
