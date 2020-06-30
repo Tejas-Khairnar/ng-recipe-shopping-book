@@ -1,17 +1,20 @@
+import { State } from './state.model';
 import { Ingredient } from "../shared/ingredient.model";
 import * as ShoppingListActions from './shopping-list.actions';
 
 // initial state
-const initialSate = {
+const initialSate: State = {
     ingredients: [
         new Ingredient('Apple', 5),
         new Ingredient('Tomato', 10)
-    ]
+    ],
+    editedIngredient: null,
+    editedIngredientIndex: -1
 };
 
 // this function called by NgRx library and pass these arguments here automatically
 // ShoppingListActions.ShoppingListActions => type exported from shopping-list actions
-export function ShoppingListReducer(state = initialSate, action: ShoppingListActions.ShoppingListActions) {
+export function ShoppingListReducer(state: State = initialSate, action: ShoppingListActions.ShoppingListActions) {
     // multiple action tyoes we may have
     switch (action.type) {
         // for adding single ingredient

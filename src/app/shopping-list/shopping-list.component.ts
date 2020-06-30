@@ -1,9 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 
 import { Ingredient } from '../shared/ingredient.model';
 import { ShoppingListService } from './shopping-list.service';
+import * as fromShoppingList from '../store/state.model';
 
 @Component({
   selector: 'app-shopping-list',
@@ -18,7 +19,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   // ingredientsChangedSub: Subscription;
 
   // inject shopping list service here, inject Store of apllication state
-  constructor(private shoppingListService: ShoppingListService, private store: Store<{ shoppingList: { ingredients: Ingredient[] } }>) { }
+  constructor(private shoppingListService: ShoppingListService, private store: Store<fromShoppingList.AppState>) { }
 
   ngOnInit(): void {
     // Fetching ingredients from NgRx state management store

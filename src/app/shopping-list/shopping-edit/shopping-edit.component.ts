@@ -7,6 +7,7 @@ import { Ingredient } from './../../shared/ingredient.model';
 import { ShoppingListService } from '../shopping-list.service';
 import * as ShoppingListActions from '../../store/shopping-list.actions';
 import { ShoppingListReducer } from 'src/app/store/shopping-list.reducer';
+import * as fromShoppingList from '../../store/state.model';
 
 @Component({
   selector: 'app-shopping-edit',
@@ -30,7 +31,7 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
   editedItemFromShoppingList: Ingredient;
 
   // inject shopping list service here, inject Store of apllication state
-  constructor(private shoppingListService: ShoppingListService, private store: Store<{ shoppingList: { ingredients: Ingredient[] } }>) { }
+  constructor(private shoppingListService: ShoppingListService, private store: Store<fromShoppingList.AppState>) { }
 
   ngOnInit(): void {
     // get index of selected item emiting by subject from shopping-list

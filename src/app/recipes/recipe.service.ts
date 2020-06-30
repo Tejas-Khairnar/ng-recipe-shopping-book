@@ -6,6 +6,7 @@ import { Store } from '@ngrx/store';
 import { Recipe } from './recipe.model';
 import { Ingredient } from '../shared/ingredient.model';
 import * as ShoppingListActions from '../store/shopping-list.actions';
+import * as fromShoppingList from '../store/state.model';
 
 // inject shopping list service inside this service
 @Injectable()
@@ -37,7 +38,7 @@ export class RecipeService {
     private recipes: Recipe[] = [];
 
     // inject shopping list service here, inject Store of apllication state
-    constructor(private shoppingListService: ShoppingListService, private store: Store<{ shoppingList: { ingredients: Ingredient[] } }>) { }
+    constructor(private shoppingListService: ShoppingListService, private store: Store<fromShoppingList.AppState>) { }
 
     // return recipes outside
     getRecipes() {
