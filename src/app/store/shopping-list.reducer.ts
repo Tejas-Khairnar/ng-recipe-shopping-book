@@ -31,6 +31,38 @@ export function ShoppingListReducer(state = initialSate, action: ShoppingListAct
                 // copy elements of payload array to new array here using spread operator
                 ingredients: [...state.ingredients, ...action.payload]
             }
+        // for update ingredient
+        case ShoppingListActions.UPDATE_INGREDIENT:
+            // get ingredient here using index provided in payload
+            const ingredient = state.ingredients[action.payload.index];
+            // construct updated ingredient object here
+            const updatedIngredient = {
+                // copy ingredient getting by index as payload
+                ...ingredient,
+                // copy new ingredient pass as payload and override above ingredient with new ingredient
+                ...action.payload.newIngredient
+            };
+            // construct new updated ingredients array by coping previous state ingredients
+            const updatedIngredients = [...state.ingredients];
+            // update above array with new Ingredient by using index
+            updatedIngredients[action.payload.index] = updatedIngredient;
+            return {
+                // copy previous stete here
+                ...state,
+                // passed new updated array of ingredients here
+                ingredients: updatedIngredients
+            }
+        // for update ingredient
+        case ShoppingListActions.DELETE_INGREDIENT:
+            return {
+                // copy previous stete here
+                ...state,
+                // just remove ingredient here by using JS Array.filter method
+                ingredients: state.ingredients.filter((ingredient, index) => {
+                    // payload is index here
+                    return index !== action.payload;
+                })
+            }
         // for first time when application reload or else part in all above cases
         default:
             return state;

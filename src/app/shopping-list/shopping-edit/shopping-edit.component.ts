@@ -56,7 +56,11 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
     // check mode for update existing one
     if (this.editMode) {
       // update existing ingredient to ingredient's original array in shopping list service
-      this.shoppingListService.updateSelectedIngredientFromList(this.editedItemIndex, newIngredient);
+      // this.shoppingListService.updateSelectedIngredientFromList(this.editedItemIndex, newIngredient);
+
+      // using NgRx approach for update
+      // dispatch object based on reducer update class
+      this.store.dispatch(new ShoppingListActions.UpdateIngredient({ index: this.editedItemIndex, newIngredient: newIngredient }))
     } else {
       // using NgRx state management approach now, by dispatching actions here
       // dispatch object based as reducer class
@@ -83,7 +87,12 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
   // delete selected item
   onDeleteItem() {
     // delete selected item using shopping-list service
-    this.shoppingListService.deleteSelectedIngredientFromList(this.editedItemIndex);
+    // this.shoppingListService.deleteSelectedIngredientFromList(this.editedItemIndex);
+
+    // NgRx approach to delete inredient
+    // dispatch action based on reducer delete class
+    this.store.dispatch(new ShoppingListActions.DeleteIngredient(this.editedItemIndex));
+
     // clear the form here
     this.onFormClear();
   }
